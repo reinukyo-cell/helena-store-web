@@ -77,8 +77,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
             >
               CONSULTAR POR WHATSAPP
             </a>
-            <AddToCart product={{ id: p.id, brand: p.brand, model: p.model, sale_price: p.sale_price, image: images[0] || "" }} />
-          </div>
 
           <p className="text-xs text-gray-600 mt-6 tracking-wider">
             Stock disponible: {p.quantity}
