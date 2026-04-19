@@ -27,10 +27,14 @@ export default async function Home() {
   return (
     <main className="min-h-screen px-6 py-12 max-w-6xl mx-auto">
       <div className="flex justify-end mb-4">
-        <a href="/carrito" className="text-xs tracking-widest text-gold border border-gold px-4 py-2 hover:bg-gold hover:text-black transition-colors">
+        <a
+          href="/carrito"
+          className="text-xs tracking-widest text-gold border border-gold px-4 py-2 hover:bg-gold hover:text-black transition-colors"
+        >
           CARRITO
         </a>
       </div>
+
       <header className="mb-16 text-center">
         <h1 className="text-5xl font-light tracking-wider mb-2">HELENA STORE</h1>
         <p className="text-sm text-gray-500 tracking-widest uppercase">
@@ -52,9 +56,10 @@ export default async function Home() {
               const images = Array.isArray(p.images) ? p.images : [];
               const mainImage = images[0];
               return (
-                <div
+                <a
                   key={p.id}
-                  className="border border-gray-800 overflow-hidden hover:border-gold transition-colors"
+                  href={`/producto/${p.id}`}
+                  className="block border border-gray-800 overflow-hidden hover:border-gold transition-colors"
                 >
                   {mainImage ? (
                     <div className="aspect-square bg-gray-900 overflow-hidden">
@@ -83,7 +88,7 @@ export default async function Home() {
                       <p className="text-xs text-gray-600 mt-2">Stock: {p.quantity}</p>
                     )}
                   </div>
-                </div>
+                </a>
               );
             })}
           </div>
