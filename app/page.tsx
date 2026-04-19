@@ -26,6 +26,11 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen px-6 py-12 max-w-6xl mx-auto">
+      <div className="flex justify-end mb-4">
+        <a href="/carrito" className="text-xs tracking-widest text-gold border border-gold px-4 py-2 hover:bg-gold hover:text-black transition-colors">
+          CARRITO
+        </a>
+      </div>
       <header className="mb-16 text-center">
         <h1 className="text-5xl font-light tracking-wider mb-2">HELENA STORE</h1>
         <p className="text-sm text-gray-500 tracking-widest uppercase">
