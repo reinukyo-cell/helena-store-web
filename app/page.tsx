@@ -43,27 +43,44 @@ export default async function Home() {
             {cat}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((p: any) => (
-              <div
-                key={p.id}
-                className="border border-gray-800 p-6 hover:border-gold transition-colors"
-              >
-                <h3 className="text-lg font-light mb-1">
-                  {p.brand} {p.model}
-                </h3>
-                <p className="text-xs text-gray-500 mb-4">
-                  {[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}
-                </p>
-                <p className="text-2xl font-light text-gold">
-                  ${Math.round(p.sale_price)} USD
-                </p>
-                {p.quantity > 1 && (
-                  <p className="text-xs text-gray-600 mt-2">
-                    Stock: {p.quantity}
-                  </p>
-                )}
-              </div>
-            ))}
+            {items.map((p: any) => {
+              const images = Array.isArray(p.images) ? p.images : [];
+              const mainImage = images[0];
+              return (
+                <div
+                  key={p.id}
+                  className="border border-gray-800 overflow-hidden hover:border-gold transition-colors"
+                >
+                  {mainImage ? (
+                    <div className="aspect-square bg-gray-900 overflow-hidden">
+                      <img
+                        src={mainImage}
+                        alt={`${p.brand} ${p.model}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="aspect-square bg-gray-900 flex items-center justify-center">
+                      <span className="text-gray-700 text-xs tracking-widest">SIN FOTO</span>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-lg font-light mb-1">
+                      {p.brand} {p.model}
+                    </h3>
+                    <p className="text-xs text-gray-500 mb-4">
+                      {[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}
+                    </p>
+                    <p className="text-2xl font-light text-gold">
+                      ${Math.round(p.sale_price)} USD
+                    </p>
+                    {p.quantity > 1 && (
+                      <p className="text-xs text-gray-600 mt-2">Stock: {p.quantity}</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       ))}
