@@ -7,7 +7,10 @@ const supabase = createClient(
 );
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
-const CHAT_ID = process.env.TELEGRAM_CHAT_ID!;
+const CHAT_IDS = (process.env.TELEGRAM_CHAT_ID || "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,15 +47,19 @@ export async function POST(req: NextRequest) {
       `*TOTAL: $${Math.round(body.total)} USD*` +
       (body.notes ? `\n\n📝 ${body.notes}` : "");
 
-    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: msg,
-        parse_mode: "Markdown",
-      }),
-    });
+    await Promise.all(
+      CHAT_IDS.map((chatId) =>
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: msg,
+            parse_mode: "Markdown",
+          }),
+        })
+      )
+    );
 
     return NextResponse.json({ ok: true, id: data.id });
   } catch (e: any) {
