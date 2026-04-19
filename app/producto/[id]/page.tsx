@@ -70,13 +70,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
           {p.notes && <p className="text-sm text-gray-500 mb-8">{p.notes}</p>}
 
           <div className="space-y-3">
-            
+            <a
               href={waUrl}
               target="_blank"
               className="block w-full text-center py-4 bg-green-700 hover:bg-green-600 transition-colors tracking-wider text-sm"
             >
               CONSULTAR POR WHATSAPP
             </a>
+            <AddToCart product={{ id: p.id, brand: p.brand, model: p.model, sale_price: p.sale_price, image: images[0] || "" }} />
+          </div>
 
           <p className="text-xs text-gray-600 mt-6 tracking-wider">
             Stock disponible: {p.quantity}
