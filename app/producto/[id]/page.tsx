@@ -23,14 +23,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
   const images: string[] = Array.isArray(p.images) ? p.images : [];
   const msg = encodeURIComponent(
-    `Hola! Me interesa el ${p.brand} ${p.model} de $${Math.round(p.sale_price)} USD. ¿Esta disponible?`
+    `Hola! Me interesa el ${p.brand} ${p.model} de $${Math.round(p.sale_price)} USD. Esta disponible?`
   );
   const waUrl = `https://wa.me/${WHATSAPP}?text=${msg}`;
 
   return (
     <main className="min-h-screen px-6 py-12 max-w-5xl mx-auto">
       <Link href="/" className="text-xs text-gray-500 hover:text-gold tracking-widest">
-        ← VOLVER
+        VOLVER
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
@@ -61,7 +61,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           <p className="text-xs tracking-widest text-gold uppercase mb-2">{p.brand}</p>
           <h1 className="text-4xl font-light mb-4">{p.model}</h1>
           <p className="text-sm text-gray-400 mb-6">
-            {[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}
+            {[p.color, p.storage, p.condition].filter(Boolean).join(" | ")}
           </p>
           <p className="text-4xl font-light text-gold mb-8">
             ${Math.round(p.sale_price)} USD
