@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
         payment_method: body.payment_method,
         notes: body.notes || "",
         source: "web",
+        receipt_url: body.receipt_url || "",
       }])
       .select()
       .single();
@@ -45,11 +46,13 @@ export async function POST(req: NextRequest) {
       `💳 ${body.payment_method}\n\n` +
       `${itemsText}\n\n` +
       `*TOTAL: $${Math.round(body.total)} USD*` +
-      (body.notes ? `\n\n📝 ${body.notes}` : "");
+      (body.notes ? `\n\n📝 ${body.notes}` : "") +
+      (body.receipt_url ? `\n\n📎 Comprobante: ${body.receipt_url}` : "");
 
     await Promise.all(
-      CHAT_IDS.map((chatId) =>
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      CHAT_IDS.map(async (chatId) => {
+        // Mensaje principal
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -57,8 +60,20 @@ export async function POST(req: NextRequest) {
             text: msg,
             parse_mode: "Markdown",
           }),
-        })
-      )
+        });
+        // Si hay comprobante, enviarlo como foto
+        if (body.receipt_url) {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: chatId,
+              photo: body.receipt_url,
+              caption: `Comprobante del pedido #${data.id}`,
+            }),
+          });
+        }
+      })
     );
 
     return NextResponse.json({ ok: true, id: data.id });
