@@ -140,9 +140,9 @@ export default async function Home() {
       {["Celulares", "Accesorios", "Hogar", "Otros"].map((cat) => {
         const items = products.filter((p: any) => {
           if (cat === "Accesorios") return p.brand === "Accesorios";
-          if (cat === "Hogar") return p.brand === "Otros";
-          if (cat === "Otros") return p.brand === "Esotéricos";
-          return !["Accesorios", "Otros", "Esotéricos"].includes(p.brand);
+          if (cat === "Hogar") return p.brand === "Hogar";
+          if (cat === "Otros") return p.brand === "Otros" || p.brand === "Esotéricos";
+          return !["Accesorios", "Hogar", "Otros", "Esotéricos"].includes(p.brand);
         });
         if (items.length === 0) return null;
         const id = cat.toLowerCase();
@@ -172,7 +172,6 @@ export default async function Home() {
         );
       })}
 
-      {/* SOBRE NOSOTROS */}
       <section id="sobre" className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="text-center mb-8 sm:mb-12">
           <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-3">Nuestra historia</p>
@@ -194,7 +193,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="bg-footer px-4 sm:px-6 py-10 sm:py-16">
         <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 text-left mb-8 sm:mb-10">
           <div className="col-span-2 lg:col-span-1">
