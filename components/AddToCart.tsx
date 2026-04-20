@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 
 type CartItem = {
   id: number;
@@ -32,9 +31,9 @@ export default function AddToCart({ product }: { product: any }) {
   return (
     <button
       onClick={add}
-      className="block w-full text-center py-4 border border-gold text-gold hover:bg-gold hover:text-black transition-colors tracking-wider text-sm"
+      className="block w-full text-center py-4 border border-gold text-gold hover:bg-gold hover:text-black transition-all tracking-[0.2em] text-[10px] sm:text-xs uppercase font-medium"
     >
-      {added ? "✓ AGREGADO AL CARRITO" : "AGREGAR AL CARRITO"}
+      {added ? "✓ Agregado al carrito" : "Agregar al carrito"}
     </button>
   );
 }
