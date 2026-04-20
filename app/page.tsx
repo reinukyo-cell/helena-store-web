@@ -53,9 +53,10 @@ export default async function Home() {
         </Link>
       </section>
 
+      {/* CATEGORIES: celulares 3 filas + 3 chicas al lado */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
 
-        <Link href="#celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 md:row-span-2 aspect-[4/5] md:aspect-auto md:min-h-[720px]">
+        <Link href="#celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 md:row-span-3 aspect-[4/5] md:aspect-auto">
           <img src="/categorias/celulares.jpg" alt="Celulares" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
@@ -68,42 +69,42 @@ export default async function Home() {
           </div>
         </Link>
 
-        <Link href="#accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3]">
+        <Link href="#accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/accesorios.jpg" alt="Accesorios" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+          <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
             <div>
-              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Complementos</p>
-              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Accesorios</h3>
-              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Fundas, cables, cargadores, auriculares.</p>
+              <p className="text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-gold mb-1">Complementos</p>
+              <h3 className="font-serif text-2xl sm:text-3xl font-medium mb-1 drop-shadow-lg">Accesorios</h3>
+              <p className="text-[11px] sm:text-xs opacity-90 drop-shadow">Fundas, cables, cargadores.</p>
             </div>
-            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
+            <span className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
         </Link>
 
-        <Link href="#hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3]">
+        <Link href="#hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/hogar.jpg" alt="Hogar" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+          <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
             <div>
-              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Estilo de vida</p>
-              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Hogar</h3>
-              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Electrodomésticos y selecciones especiales.</p>
+              <p className="text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-gold mb-1">Estilo de vida</p>
+              <h3 className="font-serif text-2xl sm:text-3xl font-medium mb-1 drop-shadow-lg">Hogar</h3>
+              <p className="text-[11px] sm:text-xs opacity-90 drop-shadow">Electrodomésticos y selecciones.</p>
             </div>
-            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
+            <span className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
         </Link>
 
-        <Link href="#otros" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3] md:col-span-2">
+        <Link href="#otros" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/otros.jpg" alt="Otros" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
-          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+          <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
             <div>
-              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Selección especial</p>
-              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Otros</h3>
-              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Esotéricos y piezas únicas.</p>
+              <p className="text-[9px] sm:text-[10px] tracking-[0.3em] uppercase text-gold mb-1">Selección especial</p>
+              <h3 className="font-serif text-2xl sm:text-3xl font-medium mb-1 drop-shadow-lg">Otros</h3>
+              <p className="text-[11px] sm:text-xs opacity-90 drop-shadow">Esotéricos y piezas únicas.</p>
             </div>
-            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
+            <span className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
         </Link>
       </section>
