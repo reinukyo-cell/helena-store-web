@@ -53,41 +53,46 @@ export default async function Home() {
         </Link>
       </section>
 
+      {/* CATEGORIES - imagen fondo completo con texto encima */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-        <Link href="#celulares" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col md:row-span-2 overflow-hidden">
-          <div className="p-6 sm:p-8 pb-3 sm:pb-4">
-            <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Categoría principal</p>
-            <h3 className="font-serif text-2xl sm:text-3xl md:text-5xl font-medium mb-2 sm:mb-3">Celulares</h3>
-            <p className="text-xs sm:text-sm opacity-65">iPhone, Samsung, Xiaomi y más.<br />Nuevos y seleccionados con garantía.</p>
+
+        <Link href="#celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 md:row-span-2 aspect-[4/5] md:aspect-auto md:min-h-[720px]">
+          <img src="/categorias/celulares.jpg" alt="Celulares" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+            <div>
+              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Categoría principal</p>
+              <h3 className="font-serif text-3xl sm:text-4xl md:text-6xl font-medium mb-2 sm:mb-3 drop-shadow-lg">Celulares</h3>
+              <p className="text-xs sm:text-sm opacity-90 max-w-xs drop-shadow">iPhone, Samsung, Xiaomi y más.<br />Nuevos y seleccionados con garantía.</p>
+            </div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver colección →</span>
           </div>
-          <div className="relative w-full aspect-square md:aspect-auto md:flex-1 overflow-hidden">
-            <img src="/categorias/celulares.jpg" alt="Celulares" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div className="px-6 sm:px-8 py-4 sm:py-5 border-t border-gold/20 text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver colección →</div>
         </Link>
 
-        <Link href="#accesorios" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col overflow-hidden">
-          <div className="p-6 sm:p-8 pb-3 sm:pb-4">
-            <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Complementos</p>
-            <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 sm:mb-3">Accesorios</h3>
-            <p className="text-xs sm:text-sm opacity-65">Fundas, cables, cargadores, auriculares.</p>
+        <Link href="#accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3]">
+          <img src="/categorias/accesorios.jpg" alt="Accesorios" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+            <div>
+              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Complementos</p>
+              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Accesorios</h3>
+              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Fundas, cables, cargadores, auriculares.</p>
+            </div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
-          <div className="relative w-full aspect-[16/10] overflow-hidden">
-            <img src="/categorias/accesorios.jpg" alt="Accesorios" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div className="px-6 sm:px-8 py-4 sm:py-5 border-t border-gold/20 text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</div>
         </Link>
 
-        <Link href="#hogar" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col overflow-hidden">
-          <div className="p-6 sm:p-8 pb-3 sm:pb-4">
-            <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Estilo de vida</p>
-            <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 sm:mb-3">Hogar</h3>
-            <p className="text-xs sm:text-sm opacity-65">Electrodomésticos y selecciones especiales.</p>
+        <Link href="#hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3]">
+          <img src="/categorias/hogar.jpg" alt="Hogar" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+            <div>
+              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Estilo de vida</p>
+              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Hogar</h3>
+              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Electrodomésticos y selecciones especiales.</p>
+            </div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
-          <div className="relative w-full aspect-[16/10] overflow-hidden">
-            <img src="/categorias/hogar.jpg" alt="Hogar" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-          </div>
-          <div className="px-6 sm:px-8 py-4 sm:py-5 border-t border-gold/20 text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</div>
         </Link>
       </section>
 
