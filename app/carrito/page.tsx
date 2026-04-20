@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 type CartItem = {
   id: number;
@@ -65,11 +66,15 @@ export default function CartPage() {
 
   if (done) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6">
+      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6">
+        <ThemeToggle />
         <div className="text-center">
-          <h1 className="text-3xl font-light mb-4">PEDIDO RECIBIDO</h1>
-          <p className="text-gray-500 mb-8">Te contactaremos por WhatsApp a la brevedad.</p>
-          <Link href="/" className="text-gold tracking-widest text-sm">VOLVER AL CATALOGO</Link>
+          <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-4">Gracias</p>
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium mb-4">Pedido recibido</h1>
+          <p className="opacity-70 mb-8 text-sm sm:text-base">Te contactaremos por WhatsApp a la brevedad.</p>
+          <Link href="/" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
+            Volver al catálogo
+          </Link>
         </div>
       </main>
     );
@@ -77,41 +82,51 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6">
+      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6">
+        <ThemeToggle />
         <div className="text-center">
-          <p className="text-gray-500 mb-8">Tu carrito esta vacio.</p>
-          <Link href="/" className="text-gold tracking-widest text-sm">VER CATALOGO</Link>
+          <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-4">Carrito</p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-medium mb-4">Tu carrito está vacío</h1>
+          <Link href="/" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all mt-4">
+            Ver catálogo
+          </Link>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen px-6 py-12 max-w-4xl mx-auto">
-      <Link href="/" className="text-xs text-gray-500 hover:text-gold tracking-widest">← VOLVER</Link>
-      <h1 className="text-3xl font-light mt-6 mb-8">TU PEDIDO</h1>
+    <main className="min-h-screen px-4 sm:px-6 py-8 sm:py-12 max-w-4xl mx-auto">
+      <ThemeToggle />
+
+      <Link href="/" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase opacity-60 hover:text-gold transition-colors">
+        ← Volver
+      </Link>
+
+      <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mt-6 sm:mt-8 mb-2">Tu pedido</p>
+      <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium mb-8 sm:mb-10">Checkout</h1>
 
       <div className="space-y-3 mb-10">
         {cart.map((item) => (
-          <div key={item.id} className="flex items-center gap-4 border border-gray-800 p-4">
-            <div className="w-20 h-20 bg-gray-900 flex-shrink-0 overflow-hidden">
+          <div key={item.id} className="flex items-center gap-3 sm:gap-4 border border-theme p-3 sm:p-4">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-soft flex-shrink-0 overflow-hidden">
               {item.image && <img src={item.image} alt="" className="w-full h-full object-cover" />}
             </div>
-            <div className="flex-1">
-              <p className="font-light">{item.brand} {item.model}</p>
-              <p className="text-sm text-gray-500">Cantidad: {item.qty}</p>
+            <div className="flex-1 min-w-0">
+              <p className="font-serif text-sm sm:text-base truncate">{item.brand} {item.model}</p>
+              <p className="text-[10px] sm:text-xs opacity-60">Cantidad: {item.qty}</p>
             </div>
-            <p className="text-gold">${Math.round(item.sale_price * item.qty)}</p>
-            <button onClick={() => remove(item.id)} className="text-gray-600 hover:text-red-500 text-xs">
-              QUITAR
+            <p className="text-gold text-sm sm:text-base whitespace-nowrap">${Math.round(item.sale_price * item.qty)}</p>
+            <button onClick={() => remove(item.id)} className="opacity-60 hover:text-red-500 text-[9px] sm:text-xs tracking-[0.2em] uppercase">
+              Quitar
             </button>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-between text-2xl font-light mb-10 border-t border-gray-800 pt-4">
-        <span>TOTAL</span>
-        <span className="text-gold">${Math.round(total)} USD</span>
+      <div className="flex justify-between items-center font-serif text-xl sm:text-2xl mb-10 border-t border-theme pt-4 sm:pt-6">
+        <span className="tracking-[0.2em] uppercase text-xs sm:text-sm">Total</span>
+        <span className="text-gold text-2xl sm:text-3xl">${Math.round(total)} USD</span>
       </div>
 
       <div className="space-y-4 mb-8">
@@ -119,24 +134,24 @@ export default function CartPage() {
           placeholder="Tu nombre *"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full bg-transparent border border-gray-800 px-4 py-3 focus:border-gold outline-none"
+          className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         />
         <input
           placeholder="WhatsApp *"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full bg-transparent border border-gray-800 px-4 py-3 focus:border-gold outline-none"
+          className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         />
         <input
-          placeholder="Direccion (opcional)"
+          placeholder="Dirección (opcional)"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="w-full bg-transparent border border-gray-800 px-4 py-3 focus:border-gold outline-none"
+          className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         />
         <select
           value={payment}
           onChange={(e) => setPayment(e.target.value)}
-          className="w-full bg-black border border-gray-800 px-4 py-3 focus:border-gold outline-none"
+          className="w-full bg-soft border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         >
           <option value="transferencia">Transferencia bancaria</option>
           <option value="efectivo">Efectivo</option>
@@ -147,16 +162,16 @@ export default function CartPage() {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
-          className="w-full bg-transparent border border-gray-800 px-4 py-3 focus:border-gold outline-none"
+          className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         />
       </div>
 
       <button
         onClick={submit}
         disabled={sending}
-        className="w-full py-4 bg-gold text-black hover:bg-yellow-600 transition-colors tracking-widest text-sm disabled:opacity-50"
+        className="w-full py-4 bg-gold text-black hover:opacity-90 transition-all tracking-[0.2em] text-[10px] sm:text-xs uppercase font-medium disabled:opacity-50"
       >
-        {sending ? "ENVIANDO..." : "CONFIRMAR PEDIDO"}
+        {sending ? "Enviando..." : "Confirmar pedido"}
       </button>
     </main>
   );
