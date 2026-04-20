@@ -22,6 +22,7 @@ export default async function Home() {
     <main className="min-h-screen">
       <ThemeToggle />
 
+      {/* HEADER */}
       <header className="px-6 pt-10 pb-5 text-center">
         <svg className="w-24 h-24 mx-auto mb-4" viewBox="0 0 100 100" fill="none">
           <rect x="20" y="20" width="60" height="60" stroke="#c9a227" strokeWidth="1.5" />
@@ -33,6 +34,7 @@ export default async function Home() {
         <p className="text-xs tracking-[0.3em] uppercase opacity-60">Premium · Santa Cruz, Argentina</p>
       </header>
 
+      {/* NAV */}
       <nav className="flex justify-center gap-10 px-6 py-5 border-y border-theme mt-8">
         <Link href="#celulares" className="text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Celulares</Link>
         <Link href="#accesorios" className="text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Accesorios</Link>
@@ -40,6 +42,7 @@ export default async function Home() {
         <Link href="/carrito" className="text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Carrito</Link>
       </nav>
 
+      {/* HERO */}
       <section className="py-20 px-6 text-center max-w-5xl mx-auto">
         <p className="text-xs tracking-[0.3em] uppercase text-gold mb-5">Nueva colección</p>
         <h2 className="font-serif text-4xl md:text-6xl font-normal leading-tight mb-5">
@@ -53,51 +56,50 @@ export default async function Home() {
         </Link>
       </section>
 
+      {/* CATEGORIES */}
       <section className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-2 gap-5">
 
-        <Link href="#celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col md:row-span-2 md:min-h-[720px] min-h-[500px]">
-          <div className="absolute inset-0 z-0">
-            <img src="/categorias/celulares.jpg" alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
-          </div>
-          <div className="relative z-10 p-8 pb-4 text-white">
+        {/* CELULARES grande */}
+        <Link href="#celulares" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col md:row-span-2 md:min-h-[720px] min-h-[500px] overflow-hidden">
+          <div className="p-8 pb-4">
             <p className="text-xs tracking-[0.3em] uppercase text-gold mb-2">Categoría principal</p>
             <h3 className="font-serif text-3xl md:text-5xl font-medium mb-3">Celulares</h3>
-            <p className="text-sm opacity-85">iPhone, Samsung, Xiaomi y más.<br />Nuevos y seleccionados con garantía.</p>
+            <p className="text-sm opacity-65">iPhone, Samsung, Xiaomi y más.<br />Nuevos y seleccionados con garantía.</p>
           </div>
-          <div className="relative z-10 flex-1"></div>
-          <div className="relative z-10 px-8 py-5 border-t border-gold/30 text-xs tracking-[0.25em] uppercase text-gold bg-black/50 backdrop-blur-sm">Ver colección →</div>
+          <div className="flex-1 flex items-center justify-center p-5 overflow-hidden">
+            <img src="/categorias/celulares.jpg" alt="Celulares" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="px-8 py-5 border-t border-gold/20 text-xs tracking-[0.25em] uppercase text-gold">Ver colección →</div>
         </Link>
 
-        <Link href="#accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col min-h-[350px]">
-          <div className="absolute inset-0 z-0">
-            <img src="/categorias/accesorios.jpg" alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
-          </div>
-          <div className="relative z-10 p-8 pb-4 text-white">
+        {/* ACCESORIOS chico */}
+        <Link href="#accesorios" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col min-h-[350px] overflow-hidden">
+          <div className="p-8 pb-4">
             <p className="text-xs tracking-[0.3em] uppercase text-gold mb-2">Complementos</p>
             <h3 className="font-serif text-3xl md:text-4xl font-medium mb-3">Accesorios</h3>
-            <p className="text-sm opacity-85">Fundas, cables, cargadores, auriculares.</p>
+            <p className="text-sm opacity-65">Fundas, cables, cargadores, auriculares.</p>
           </div>
-          <div className="relative z-10 flex-1"></div>
-          <div className="relative z-10 px-8 py-5 border-t border-gold/30 text-xs tracking-[0.25em] uppercase text-gold bg-black/50 backdrop-blur-sm">Ver →</div>
+          <div className="flex-1 flex items-center justify-center overflow-hidden">
+            <img src="/categorias/accesorios.jpg" alt="Accesorios" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="px-8 py-5 border-t border-gold/20 text-xs tracking-[0.25em] uppercase text-gold">Ver →</div>
         </Link>
 
-        <Link href="#hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col min-h-[350px]">
-          <div className="absolute inset-0 z-0">
-            <img src="/categorias/hogar.jpg" alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10"></div>
-          </div>
-          <div className="relative z-10 p-8 pb-4 text-white">
+        {/* HOGAR chico */}
+        <Link href="#hogar" className="group bg-soft border border-transparent hover:border-gold transition-all hover:-translate-y-1 flex flex-col min-h-[350px] overflow-hidden">
+          <div className="p-8 pb-4">
             <p className="text-xs tracking-[0.3em] uppercase text-gold mb-2">Estilo de vida</p>
             <h3 className="font-serif text-3xl md:text-4xl font-medium mb-3">Hogar</h3>
-            <p className="text-sm opacity-85">Electrodomésticos y selecciones especiales.</p>
+            <p className="text-sm opacity-65">Electrodomésticos y selecciones especiales.</p>
           </div>
-          <div className="relative z-10 flex-1"></div>
-          <div className="relative z-10 px-8 py-5 border-t border-gold/30 text-xs tracking-[0.25em] uppercase text-gold bg-black/50 backdrop-blur-sm">Ver →</div>
+          <div className="flex-1 flex items-center justify-center overflow-hidden">
+            <img src="/categorias/hogar.jpg" alt="Hogar" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          </div>
+          <div className="px-8 py-5 border-t border-gold/20 text-xs tracking-[0.25em] uppercase text-gold">Ver →</div>
         </Link>
       </section>
 
+      {/* DESTACADOS iPhone */}
       {iphones.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 py-20">
           <div className="text-center mb-12">
@@ -132,6 +134,7 @@ export default async function Home() {
         </section>
       )}
 
+      {/* TODOS LOS PRODUCTOS (secciones con anclas) */}
       {["Celulares", "Accesorios", "Hogar"].map((cat) => {
         const items = products.filter((p: any) => {
           if (cat === "Accesorios") return p.brand === "Accesorios";
@@ -166,6 +169,7 @@ export default async function Home() {
         );
       })}
 
+      {/* FOOTER */}
       <footer className="bg-footer mt-16 px-6 py-16">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left mb-10">
           <div>
