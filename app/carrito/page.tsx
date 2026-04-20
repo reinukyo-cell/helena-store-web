@@ -227,10 +227,17 @@ export default function CartPage() {
       )}
 
       {payment === "cripto" && (
-        <div className="border border-theme p-4 sm:p-5 mb-6 text-xs sm:text-sm space-y-1 opacity-90">
-          <p className="font-serif text-base text-gold mb-2">Dirección de pago (USDT TRC20)</p>
-          <p className="break-all select-all">TBnHKWDPgPYtMA5pT3LcvNcg3pk9VNTpJW</p>
-          <p className="opacity-60 mt-2">Verificá los datos antes de enviar.</p>
+        <div className="border border-theme p-4 sm:p-5 mb-6 text-xs sm:text-sm space-y-3 opacity-90">
+          <p className="font-serif text-base text-gold">Pago con Cripto · USDT TRC20</p>
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <img src="/qr-usdt.png" alt="QR USDT TRC20" className="w-36 h-36 sm:w-44 sm:h-44 bg-white p-2" />
+            <div className="flex-1 space-y-2">
+              <p className="opacity-60 text-[11px]">Red: <span className="text-gold">TRC20 (Tron)</span></p>
+              <p className="opacity-60 text-[11px]">Dirección:</p>
+              <p className="break-all select-all text-[11px] sm:text-xs font-mono bg-black/20 p-2">TBnHKWDPgPYtMA5pT3LcvNcg3pk9VNTpJW</p>
+              <p className="opacity-60 text-[10px]">⚠️ Verificá que la red sea TRC20 antes de enviar. Otras redes pueden perder los fondos.</p>
+            </div>
+          </div>
         </div>
       )}
 
