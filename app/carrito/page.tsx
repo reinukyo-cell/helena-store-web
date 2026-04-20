@@ -12,6 +12,8 @@ type CartItem = {
   qty: number;
 };
 
+const WHATSAPP = "5492966210440";
+
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [name, setName] = useState("");
@@ -19,8 +21,11 @@ export default function CartPage() {
   const [address, setAddress] = useState("");
   const [notes, setNotes] = useState("");
   const [payment, setPayment] = useState("transferencia");
+  const [receipt, setReceipt] = useState<File | null>(null);
+  const [receiptPreview, setReceiptPreview] = useState<string>("");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const [orderId, setOrderId] = useState<number | null>(null);
 
   useEffect(() => {
     const c = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -35,12 +40,33 @@ export default function CartPage() {
     localStorage.setItem("cart", JSON.stringify(c));
   };
 
+  const handleReceipt = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setReceipt(f);
+    setReceiptPreview(URL.createObjectURL(f));
+  };
+
   const submit = async () => {
     if (!name || !phone) {
       alert("Nombre y teléfono son obligatorios.");
       return;
     }
     setSending(true);
+
+    let receipt_url = "";
+    if (receipt) {
+      try {
+        const fd = new FormData();
+        fd.append("file", receipt);
+        const up = await fetch("/api/upload-receipt", { method: "POST", body: fd });
+        const d = await up.json();
+        receipt_url = d.url || "";
+      } catch {
+        // sigue sin comprobante
+      }
+    }
+
     const res = await fetch("/api/order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,10 +78,13 @@ export default function CartPage() {
         payment_method: payment,
         items: cart,
         total,
+        receipt_url,
       }),
     });
     setSending(false);
     if (res.ok) {
+      const d = await res.json();
+      setOrderId(d.id);
       localStorage.removeItem("cart");
       setCart([]);
       setDone(true);
@@ -65,16 +94,30 @@ export default function CartPage() {
   };
 
   if (done) {
+    const msg = encodeURIComponent(
+      `Hola! Hice el pedido #${orderId || ""} por la web. Adjunto comprobante de pago.`
+    );
     return (
       <main className="min-h-screen flex items-center justify-center px-4 sm:px-6">
         <ThemeToggle />
-        <div className="text-center">
+        <div className="text-center max-w-md">
           <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-4">Gracias</p>
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-medium mb-4">Pedido recibido</h1>
-          <p className="opacity-70 mb-8 text-sm sm:text-base">Te contactaremos por WhatsApp a la brevedad.</p>
-          <Link href="/" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
-            Volver al catálogo
-          </Link>
+          <p className="opacity-70 mb-6 text-sm sm:text-base">
+            Recibimos tu pedido {orderId ? `#${orderId}` : ""}. Te contactamos por WhatsApp para confirmar y coordinar la entrega.
+          </p>
+          <a
+            href={`https://wa.me/${WHATSAPP}?text=${msg}`}
+            target="_blank"
+            className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 bg-gold text-black text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-4 hover:opacity-90 transition-all"
+          >
+            Enviar comprobante por WhatsApp
+          </a>
+          <div>
+            <Link href="/" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all mt-2">
+              Volver al catálogo
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -129,6 +172,7 @@ export default function CartPage() {
         <span className="text-gold text-2xl sm:text-3xl">${Math.round(total)} USD</span>
       </div>
 
+      {/* DATOS */}
       <div className="space-y-4 mb-8">
         <input
           placeholder="Tu nombre *"
@@ -148,23 +192,81 @@ export default function CartPage() {
           onChange={(e) => setAddress(e.target.value)}
           className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
         />
-        <select
-          value={payment}
-          onChange={(e) => setPayment(e.target.value)}
-          className="w-full bg-soft border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
-        >
-          <option value="transferencia">Transferencia bancaria</option>
-          <option value="efectivo">Efectivo</option>
-          <option value="mercadopago">MercadoPago</option>
-        </select>
-        <textarea
-          placeholder="Notas (opcional)"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          rows={3}
-          className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm"
-        />
       </div>
+
+      {/* METODO DE PAGO */}
+      <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-4">Método de pago</p>
+
+      <div className="grid grid-cols-3 gap-2 mb-6">
+        {[
+          { v: "transferencia", l: "Transferencia" },
+          { v: "cripto", l: "Cripto" },
+          { v: "naranjax", l: "Naranja X" },
+        ].map((p) => (
+          <button
+            key={p.v}
+            onClick={() => setPayment(p.v)}
+            className={`py-3 text-[10px] sm:text-xs tracking-[0.2em] uppercase border transition-all ${
+              payment === p.v ? "bg-gold text-black border-gold" : "border-theme hover:border-gold"
+            }`}
+          >
+            {p.l}
+          </button>
+        ))}
+      </div>
+
+      {payment === "transferencia" && (
+        <div className="border border-theme p-4 sm:p-5 mb-6 text-xs sm:text-sm space-y-1 opacity-90">
+          <p className="font-serif text-base text-gold mb-2">Datos de transferencia</p>
+          <p><span className="opacity-60">CBU:</span> 4530000800013865417568</p>
+          <p><span className="opacity-60">Alias:</span> HARMENGOL.NX.ARS</p>
+          <p><span className="opacity-60">Caja de ahorro:</span> 1386541756</p>
+          <p><span className="opacity-60">Titular:</span> Helena Geovana Armengol</p>
+          <p><span className="opacity-60">CUIL:</span> 27437085469</p>
+        </div>
+      )}
+
+      {payment === "cripto" && (
+        <div className="border border-theme p-4 sm:p-5 mb-6 text-xs sm:text-sm space-y-1 opacity-90">
+          <p className="font-serif text-base text-gold mb-2">Dirección de pago (USDT TRC20)</p>
+          <p className="break-all select-all">TBnHKWDPgPYtMA5pT3LcvNcg3pk9VNTpJW</p>
+          <p className="opacity-60 mt-2">Verificá los datos antes de enviar.</p>
+        </div>
+      )}
+
+      {payment === "naranjax" && (
+        <div className="border border-theme p-4 sm:p-5 mb-6 text-xs sm:text-sm opacity-90">
+          <p className="font-serif text-base text-gold mb-2">Naranja X</p>
+          <p>Pagá a través de Naranja X al alias <span className="text-gold">HARMENGOL.NX.ARS</span> y adjuntá el comprobante.</p>
+        </div>
+      )}
+
+      {/* COMPROBANTE */}
+      <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-3">Comprobante de pago</p>
+      <label className="block w-full border border-dashed border-gold/50 p-6 text-center cursor-pointer hover:bg-gold/5 transition-all mb-6">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleReceipt}
+          className="hidden"
+        />
+        {receiptPreview ? (
+          <img src={receiptPreview} alt="" className="max-h-48 mx-auto" />
+        ) : (
+          <p className="text-xs sm:text-sm opacity-70">
+            📎 Adjuntar foto del comprobante<br />
+            <span className="opacity-50 text-[10px]">(se enviará automáticamente a la tienda)</span>
+          </p>
+        )}
+      </label>
+
+      <textarea
+        placeholder="Notas (opcional)"
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        rows={3}
+        className="w-full bg-transparent border border-theme px-4 py-3 focus:border-gold outline-none transition-colors text-sm mb-6"
+      />
 
       <button
         onClick={submit}
