@@ -37,7 +37,7 @@ export default async function Home() {
         <Link href="#celulares" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Celulares</Link>
         <Link href="#accesorios" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Accesorios</Link>
         <Link href="#hogar" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Hogar</Link>
-        <Link href="/carrito" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Carrito</Link>
+        <Link href="#otros" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Otros</Link>
       </nav>
 
       <section className="py-12 sm:py-20 px-4 sm:px-6 text-center max-w-5xl mx-auto">
@@ -93,6 +93,19 @@ export default async function Home() {
             <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
           </div>
         </Link>
+
+        <Link href="#otros" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[4/3] md:col-span-2">
+          <img src="/categorias/otros.jpg" alt="Otros" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+          <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
+            <div>
+              <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-2">Selección especial</p>
+              <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2 drop-shadow-lg">Otros</h3>
+              <p className="text-xs sm:text-sm opacity-90 drop-shadow">Esotéricos y piezas únicas.</p>
+            </div>
+            <span className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-gold">Ver →</span>
+          </div>
+        </Link>
       </section>
 
       {iphones.length > 0 && (
@@ -129,10 +142,11 @@ export default async function Home() {
         </section>
       )}
 
-      {["Celulares", "Accesorios", "Hogar"].map((cat) => {
+      {["Celulares", "Accesorios", "Hogar", "Otros"].map((cat) => {
         const items = products.filter((p: any) => {
           if (cat === "Accesorios") return p.brand === "Accesorios";
-          if (cat === "Hogar") return p.brand === "Otros" || p.brand === "Esotéricos";
+          if (cat === "Hogar") return p.brand === "Otros";
+          if (cat === "Otros") return p.brand === "Esotéricos";
           return !["Accesorios", "Otros", "Esotéricos"].includes(p.brand);
         });
         if (items.length === 0) return null;
@@ -173,7 +187,8 @@ export default async function Home() {
             <h4 className="font-serif text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 text-gold">Tienda</h4>
             <a href="#celulares" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Celulares</a>
             <a href="#accesorios" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Accesorios</a>
-            <a href="#hogar" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold transition-all">Hogar</a>
+            <a href="#hogar" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Hogar</a>
+            <a href="#otros" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold transition-all">Otros</a>
           </div>
           <div>
             <h4 className="font-serif text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 text-gold">Contacto</h4>
