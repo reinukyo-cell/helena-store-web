@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billones — Helena Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: #242424;
+  --gold: #c9a227;
+  --gold2: #e8bb3a;
+  --text: #f0ede6;
+  --muted: #666;
+  --green: #22c55e;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  --purple: #a855f7;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(8,8,8,0.95);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo-mark {
+  width: 36px; height: 36px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 600;
+  color: #080808;
+}
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.brand-sub {
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1px;
+}
+.header-right { display: flex; align-items: center; gap: 12px; }
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.last-update { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+.refresh-btn {
+  background: none; border: 1px solid var(--border);
+  color: var(--muted); padding: 6px 12px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.15em; cursor: pointer;
+  text-transform: uppercase; transition: all 0.2s;
+}
+.refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* MAIN */
+.main { padding: 24px 28px; max-width: 1600px; margin: 0 auto; }
+
+/* LOADING */
+.loading-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 16px; z-index: 999;
+  transition: opacity 0.4s;
+}
+.loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; color: var(--gold);
+}
+.loading-bar-wrap {
+  width: 200px; height: 2px;
+  background: var(--border);
+}
+.loading-bar {
+  height: 100%; background: var(--gold);
+  width: 0%; transition: width 0.1s;
+}
+.loading-text { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+
+/* ERROR */
+.error-banner {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-left: 3px solid var(--red);
+  padding: 14px 18px; border-radius: 2px;
+  font-size: 12px; margin-bottom: 24px;
+  display: none;
+}
+.error-banner.show { display: block; }
+
+/* CONFIG PANEL */
+.config-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px; margin-bottom: 24px;
+  display: none;
+}
+.config-panel.show { display: block; }
+.config-panel h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; margin-bottom: 16px; color: var(--gold);
+}
+.config-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.config-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 200px; }
+.config-field label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.config-field input {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); padding: 10px 12px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  outline: none; transition: border-color 0.2s;
+}
+.config-field input:focus { border-color: var(--gold); }
+.config-save {
+  background: var(--gold); color: #080808; border: none;
+  padding: 10px 20px; font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  cursor: pointer; font-weight: 500; transition: background 0.2s;
+  white-space: nowrap;
+}
+.config-save:hover { background: var(--gold2); }
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 9px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* KPI CARDS */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px; margin-bottom: 28px;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.kpi:hover { border-color: var(--gold); transform: translateY(-2px); }
+.kpi::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+}
+.kpi.gold::before { background: var(--gold); }
+.kpi.green::before { background: var(--green); }
+.kpi.blue::before { background: var(--blue); }
+.kpi.red::before { background: var(--red); }
+.kpi.purple::before { background: var(--purple); }
+.kpi-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.kpi-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 500;
+  color: var(--text); line-height: 1;
+}
+.kpi.gold .kpi-value { color: var(--gold); }
+.kpi.green .kpi-value { color: var(--green); }
+.kpi.blue .kpi-value { color: var(--blue); }
+.kpi.red .kpi-value { color: var(--red); }
+.kpi.purple .kpi-value { color: var(--purple); }
+.kpi-sub { font-size: 10px; color: var(--muted); margin-top: 6px; }
+
+/* GRID */
+.dash-row { display: grid; gap: 16px; margin-bottom: 20px; }
+.dash-row.cols2 { grid-template-columns: 1fr 1fr; }
+.dash-row.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.dash-row.cols1-2 { grid-template-columns: 1fr 2fr; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+.card-title {
+  font-size: 9px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TABLE */
+.table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.table th {
+  font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.table td { padding: 10px 10px; border-bottom: 1px solid rgba(36,36,36,0.5); vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: rgba(201,162,39,0.04); }
+
+/* TAGS */
+.tag {
+  display: inline-block; padding: 2px 8px;
+  font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+  border-radius: 1px;
+}
+.tag-green { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.tag-yellow { background: rgba(234,179,8,0.12); color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+.tag-red { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.tag-gold { background: rgba(201,162,39,0.12); color: var(--gold); border: 1px solid rgba(201,162,39,0.2); }
+.tag-blue { background: rgba(59,130,246,0.12); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+
+/* BARS */
+.bar-row { display: flex; flex-direction: column; gap: 12px; }
+.bar-item {}
+.bar-meta { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.bar-label { font-size: 11px; }
+.bar-val { font-size: 11px; color: var(--gold); font-weight: 500; }
+.bar-track { height: 3px; background: var(--border); }
+.bar-fill { height: 100%; background: var(--gold); transition: width 1s ease; }
+.bar-fill.green { background: var(--green); }
+.bar-fill.blue { background: var(--blue); }
+.bar-fill.purple { background: var(--purple); }
+
+/* DEBT LIST */
+.debt-item {
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.debt-item:last-child { border-bottom: none; }
+.debt-name { font-size: 12px; }
+.debt-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.debt-amount { text-align: right; }
+.debt-total { font-size: 14px; color: var(--red); font-weight: 500; }
+.debt-paid { font-size: 10px; color: var(--muted); }
+.debt-progress { height: 2px; background: var(--border); margin-top: 4px; width: 80px; }
+.debt-progress-fill { height: 100%; background: var(--green); }
+
+/* EMPTY */
+.empty { text-align: center; padding: 30px; color: var(--muted); font-size: 11px; }
+
+/* SALES MINI CHART */
+.mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 60px; padding-top: 10px; }
+.bar-col { flex: 1; background: rgba(201,162,39,0.2); border-top: 1px solid var(--gold); position: relative; transition: height 0.8s ease; min-height: 4px; }
+.bar-col:hover { background: rgba(201,162,39,0.4); }
+.bar-col-label { font-size: 8px; color: var(--muted); text-align: center; margin-top: 4px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .dash-row.cols3 { grid-template-columns: 1fr 1fr; }
+  .dash-row.cols1-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .header { padding: 14px 16px; }
+  .main { padding: 16px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-row.cols2, .dash-row.cols3 { grid-template-columns: 1fr; }
+  .brand-name { font-size: 16px; }
+  .kpi-value { font-size: 20px; }
+  .config-row { flex-direction: column; }
+  .header-right .last-update { display: none; }
+}
+@media (max-width: 400px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpi { padding: 14px; }
+  .kpi-value { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">Billones</div>
+  <div class="loading-bar-wrap"><div class="loading-bar" id="loadingBar"></div></div>
+  <div class="loading-text" id="loadingText">Conectando a Supabase...</div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-mark">B</div>
+    <div>
+      <div class="brand-name">Billones</div>
+      <div class="brand-sub">Helena Store · Dashboard</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot" id="statusDot" style="background:var(--muted)"></div>
+    <span class="last-update" id="lastUpdate">—</span>
+    <button class="refresh-btn" onclick="loadAll()">↻ Actualizar</button>
+    <button class="refresh-btn" onclick="toggleConfig()">⚙ Config</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="config-panel" id="configPanel">
+    <h3>Configuración Supabase</h3>
+    <div class="config-row">
+      <div class="config-field">
+        <label>Supabase URL</label>
+        <input type="text" id="cfgUrl" placeholder="https://xxxx.supabase.co">
+      </div>
+      <div class="config-field">
+        <label>Anon Key</label>
+        <input type="password" id="cfgKey" placeholder="eyJ...">
+      </div>
+      <button class="config-save" onclick="saveConfig()">Guardar y conectar</button>
+    </div>
+  </div>
+
+  <div class="error-banner" id="errorBanner"></div>
+
+  <!-- KPIs -->
+  <div class="section-title">Resumen general</div>
+  <div class="kpi-grid">
+    <div class="kpi gold">
+      <div class="kpi-label">Valor en stock</div>
+      <div class="kpi-value" id="kpiStockVal">—</div>
+      <div class="kpi-sub" id="kpiStockSub">—</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Ventas 30 días</div>
+      <div class="kpi-value" id="kpiVentas">—</div>
+      <div class="kpi-sub" id="kpiVentasSub">—</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Ganancia 30 días</div>
+      <div class="kpi-value" id="kpiGanancia">—</div>
+      <div class="kpi-sub" id="kpiGananciaSub">—</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Deuda total</div>
+      <div class="kpi-value" id="kpiDeuda">—</div>
+      <div class="kpi-sub" id="kpiDeudaSub">—</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">Apartados</div>
+      <div class="kpi-value" id="kpiApartados">—</div>
+      <div class="kpi-sub" id="kpiApartadosSub">—</div>
+    </div>
+  </div>
+
+  <!-- FILA 1: Inventario + Ventas recientes -->
+  <div class="dash-row cols1-2">
+    <div class="card">
+      <div class="card-title">Inventario por categoría</div>
+      <div class="bar-row" id="invBars"><div class="empty">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Últimas ventas</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Ganancia</th>
+            <th>Fecha</th>
+            <th>Pago</th>
+          </tr>
+        </thead>
+        <tbody id="salesTable"><tr><td colspan="5" class="empty">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FILA 2: Deudas + Proveedores -->
+  <div class="dash-row cols2">
+    <div class="card">
+      <div class="card-title">Deudas pendientes</div>
+      <div id="debtsList"><div class="empty">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Proveedores</div>
+      <table class="table">
+        <thead>
+          <tr><th>Proveedor</th><th>Deuda total</th><th>Estado</th></tr>
+        </thead>
+        <tbody id="suppliersTable"><tr><td colspan="3" class="empty">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FILA 3: Alertas + Apartados -->
+  <div class="dash-row cols2">
+    <div class="card">
+      <div class="card-title">Alertas de inventario</div>
+      <div id="alertsList"><div class="empty">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Apartados activos</div>
+      <table class="table">
+        <thead>
+          <tr><th>Producto</th><th>Cliente</th><th>Seña</th><th>Falta</th></tr>
+        </thead>
+        <tbody id="reservTable"><tr><td colspan="4" class="empty">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FILA 4: Top productos -->
+  <div class="dash-row cols3">
+    <div class="card">
+      <div class="card-title">Más rentables (margen %)</div>
+      <div id="topMargin"><div class="empty">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Reportes históricos</div>
+      <div id="histReport"><div class="empty">Cargando...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Resumen financiero</div>
+      <div id="finSummary"><div class="empty">Cargando...</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL_DEFAULT = 'https://vmqdpqpuzpfhgkcsajtz.supabase.co';
+const STORAGE_KEY_URL = 'billones_url';
+const STORAGE_KEY_KEY = 'billones_key';
+
+function getConfig() {
+  return {
+    url: localStorage.getItem(STORAGE_KEY_URL) || SUPABASE_URL_DEFAULT,
+    key: localStorage.getItem(STORAGE_KEY_KEY) || ''
+  };
+}
+
+function saveConfig() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  if (!url || !key) { alert('Completá URL y Key'); return; }
+  localStorage.setItem(STORAGE_KEY_URL, url);
+  localStorage.setItem(STORAGE_KEY_KEY, key);
+  document.getElementById('configPanel').classList.remove('show');
+  loadAll();
+}
+
+function toggleConfig() {
+  const p = document.getElementById('configPanel');
+  p.classList.toggle('show');
+  const cfg = getConfig();
+  document.getElementById('cfgUrl').value = cfg.url;
+  document.getElementById('cfgKey').value = cfg.key;
+}
+
+async function sbFetch(table, select = '*', filters = []) {
+  const cfg = getConfig();
+  if (!cfg.key) throw new Error('Falta configurar la Anon Key de Supabase. Hacé click en ⚙ Config.');
+  let url = `${cfg.url}/rest/v1/${table}?select=${encodeURIComponent(select)}`;
+  for (const f of filters) url += `&${f}`;
+  const res = await fetch(url, {
+    headers: {
+      'apikey': cfg.key,
+      'Authorization': `Bearer ${cfg.key}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Supabase error ${res.status}: ${txt.substring(0,100)}`);
+  }
+  return res.json();
+}
+
+function usd(n) {
+  if (n === null || n === undefined || isNaN(n)) return '$0';
+  const v = Math.round(n);
+  if (v >= 1000) return '$' + (v/1000).toFixed(1) + 'k';
+  return '$' + v;
+}
+
+function fmt(n) { return Math.round(n || 0).toLocaleString('es'); }
+function pct(n) { return (n || 0).toFixed(1) + '%'; }
+
+function setLoading(pct, txt) {
+  document.getElementById('loadingBar').style.width = pct + '%';
+  document.getElementById('loadingText').textContent = txt;
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorBanner');
+  el.textContent = msg;
+  el.classList.add('show');
+  document.getElementById('statusDot').style.background = 'var(--red)';
+}
+
+function clearError() {
+  document.getElementById('errorBanner').classList.remove('show');
+}
+
+async function loadAll() {
+  clearError();
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  document.getElementById('statusDot').style.background = 'var(--muted)';
+
+  try {
+    setLoading(15, 'Cargando inventario...');
+    const inventory = await sbFetch('products',
+      'id,brand,model,color,storage,condition,purchase_price,sale_price,quantity,status,date_added',
+      ['status=eq.disponible', 'quantity=gt.0']
+    );
+
+    setLoading(35, 'Cargando ventas...');
+    let sales = [];
+    try {
+      sales = await sbFetch('sales',
+        'id,brand,model,sale_price,purchase_price,profit,quantity,payment_method,date_sold,customer_name',
+        ['order=date_sold.desc', 'limit=50']
+      );
+    } catch(e) {
+      // tabla sales puede no existir en supabase, es local en el bot
+    }
+
+    setLoading(55, 'Cargando deudas...');
+    let debts = [], suppliers = [];
+    try {
+      debts = await sbFetch('debts',
+        'id,supplier_id,amount,amount_paid,description,due_date,paid',
+        ['paid=eq.0']
+      );
+      suppliers = await sbFetch('suppliers', 'id,name,total_debt,phone');
+    } catch(e) {}
+
+    setLoading(75, 'Cargando apartados...');
+    let reservations = [];
+    try {
+      reservations = await sbFetch('reservations',
+        'id,customer_name,deposit_amount,total_price,remaining,status,date_created',
+        ['status=eq.apartado']
+      );
+    } catch(e) {}
+
+    setLoading(95, 'Procesando datos...');
+
+    // Render
+    renderKPIs(inventory, sales, debts, reservations);
+    renderInventoryBars(inventory);
+    renderSalesTable(sales);
+    renderDebts(debts, suppliers);
+    renderSuppliers(suppliers);
+    renderReservations(reservations);
+    renderAlerts(inventory);
+    renderTopMargin(inventory);
+    renderHistReport(sales);
+    renderFinSummary(inventory, sales, debts);
+
+    setLoading(100, 'Listo');
+    document.getElementById('statusDot').style.background = 'var(--green)';
+    document.getElementById('lastUpdate').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es', {hour:'2-digit',minute:'2-digit'});
+
+    setTimeout(() => {
+      document.getElementById('loadingScreen').classList.add('hidden');
+    }, 300);
+
+  } catch(e) {
+    document.getElementById('loadingScreen').classList.add('hidden');
+    showError('Error conectando: ' + e.message + ' — Verificá la configuración con ⚙ Config');
+  }
+}
+
+function renderKPIs(inv, sales, debts, reserv) {
+  // Stock value
+  const totalVal = inv.reduce((a,p) => a + (p.sale_price * p.quantity), 0);
+  const totalInv = inv.reduce((a,p) => a + (p.purchase_price * p.quantity), 0);
+  const totalUnits = inv.reduce((a,p) => a + p.quantity, 0);
+  document.getElementById('kpiStockVal').textContent = usd(totalVal);
+  document.getElementById('kpiStockSub').textContent = totalUnits + ' unidades · inv. ' + usd(totalInv);
+
+  // Sales 30d
+  const now = new Date();
+  const since30 = new Date(now - 30*24*60*60*1000);
+  const sales30 = sales.filter(s => new Date(s.date_sold) >= since30);
+  const rev30 = sales30.reduce((a,s) => a + (s.sale_price * (s.quantity||1)), 0);
+  document.getElementById('kpiVentas').textContent = sales30.length;
+  document.getElementById('kpiVentasSub').textContent = usd(rev30) + ' facturado';
+
+  // Profit 30d
+  const profit30 = sales30.reduce((a,s) => a + ((s.profit||0) * (s.quantity||1)), 0);
+  document.getElementById('kpiGanancia').textContent = usd(profit30);
+  const margin = rev30 > 0 ? (profit30/rev30*100).toFixed(1) : '0';
+  document.getElementById('kpiGananciaSub').textContent = margin + '% margen promedio';
+
+  // Debts
+  const totalDebt = debts.reduce((a,d) => a + ((d.amount||0) - (d.amount_paid||0)), 0);
+  document.getElementById('kpiDeuda').textContent = usd(totalDebt);
+  document.getElementById('kpiDeudaSub').textContent = debts.length + ' deudas pendientes';
+
+  // Reservations
+  const totalDeposits = reserv.reduce((a,r) => a + (r.deposit_amount||0), 0);
+  const totalRemaining = reserv.reduce((a,r) => a + (r.remaining||0), 0);
+  document.getElementById('kpiApartados').textContent = reserv.length;
+  document.getElementById('kpiApartadosSub').textContent = usd(totalDeposits) + ' recibido · ' + usd(totalRemaining) + ' falta';
+}
+
+function renderInventoryBars(inv) {
+  const cats = {
+    'Celulares': { color: 'gold', brands: [] },
+    'Accesorios': { color: 'blue', brands: ['Accesorios'] },
+    'Hogar': { color: 'green', brands: ['Hogar'] },
+    'Otros': { color: 'purple', brands: ['Otros', 'Esotéricos'] },
+  };
+  const counts = { Celulares:0, Accesorios:0, Hogar:0, Otros:0 };
+  const vals = { Celulares:0, Accesorios:0, Hogar:0, Otros:0 };
+  inv.forEach(p => {
+    let cat = 'Celulares';
+    if (['Accesorios'].includes(p.brand)) cat = 'Accesorios';
+    else if (['Hogar'].includes(p.brand)) cat = 'Hogar';
+    else if (['Otros','Esotéricos'].includes(p.brand)) cat = 'Otros';
+    counts[cat] += p.quantity;
+    vals[cat] += p.sale_price * p.quantity;
+  });
+  const maxVal = Math.max(...Object.values(vals), 1);
+  const el = document.getElementById('invBars');
+  if (Object.values(counts).every(v => v === 0)) {
+    el.innerHTML = '<div class="empty">Sin productos disponibles</div>';
+    return;
+  }
+  el.innerHTML = Object.entries(cats).map(([name, cfg]) => `
+    <div class="bar-item">
+      <div class="bar-meta">
+        <span class="bar-label">${name}</span>
+        <span class="bar-val">${usd(vals[name])} · ${counts[name]} uds</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill ${cfg.color}" style="width:${vals[maxVal] === 0 ? 0 : (vals[name]/maxVal*100)}%"></div>
+      </div>
+    </div>
+  `).join('');
+  // Animate bars
+  setTimeout(() => {
+    el.querySelectorAll('.bar-fill').forEach(b => b.style.width = b.style.width);
+  }, 50);
+}
+
+function renderSalesTable(sales) {
+  const tb = document.getElementById('salesTable');
+  if (!sales.length) {
+    tb.innerHTML = '<tr><td colspan="5" class="empty">Sin ventas registradas</td></tr>';
+    return;
+  }
+  tb.innerHTML = sales.slice(0,12).map(s => {
+    const date = s.date_sold ? s.date_sold.substring(0,10) : '—';
+    const profit = (s.profit||0) * (s.quantity||1);
+    const pMethod = (s.payment_method || 'efectivo');
+    return `<tr>
+      <td>${s.brand} ${s.model}</td>
+      <td style="color:var(--gold)">${usd(s.sale_price)}</td>
+      <td style="color:var(--green)">+${usd(profit)}</td>
+      <td style="color:var(--muted)">${date}</td>
+      <td><span class="tag tag-blue">${pMethod}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDebts(debts, suppliers) {
+  const el = document.getElementById('debtsList');
+  if (!debts.length) {
+    el.innerHTML = '<div class="empty" style="color:var(--green)">Sin deudas pendientes</div>';
+    return;
+  }
+  const suppMap = {};
+  suppliers.forEach(s => suppMap[s.id] = s.name);
+  el.innerHTML = debts.map(d => {
+    const remaining = (d.amount||0) - (d.amount_paid||0);
+    const paidPct = d.amount > 0 ? Math.round((d.amount_paid||0)/d.amount*100) : 0;
+    const supName = suppMap[d.supplier_id] || 'Proveedor #' + d.supplier_id;
+    const due = d.due_date ? ' · vence ' + d.due_date.substring(0,10) : '';
+    return `<div class="debt-item">
+      <div>
+        <div class="debt-name">${supName}</div>
+        <div class="debt-desc">${d.description || '—'}${due}</div>
+      </div>
+      <div class="debt-amount">
+        <div class="debt-total">${usd(remaining)}</div>
+        <div class="debt-paid">Pagado ${usd(d.amount_paid||0)} / ${usd(d.amount)}</div>
+        <div class="debt-progress"><div class="debt-progress-fill" style="width:${paidPct}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSuppliers(suppliers) {
+  const tb = document.getElementById('suppliersTable');
+  if (!suppliers.length) {
+    tb.innerHTML = '<tr><td colspan="3" class="empty">Sin proveedores</td></tr>';
+    return;
+  }
+  tb.innerHTML = suppliers.map(s => `<tr>
+    <td>${s.name}</td>
+    <td style="color:${s.total_debt > 0 ? 'var(--red)' : 'var(--green)'}">${usd(s.total_debt||0)}</td>
+    <td><span class="tag ${s.total_debt > 0 ? 'tag-red' : 'tag-green'}">${s.total_debt > 0 ? 'Deuda' : 'Al día'}</span></td>
+  </tr>`).join('');
+}
+
+function renderReservations(reserv) {
+  const tb = document.getElementById('reservTable');
+  if (!reserv.length) {
+    tb.innerHTML = '<tr><td colspan="4" class="empty">Sin apartados activos</td></tr>';
+    return;
+  }
+  tb.innerHTML = reserv.map(r => `<tr>
+    <td>${r.inventory_id ? 'Apartado #'+r.inventory_id : 'Producto'}</td>
+    <td>${r.customer_name || '—'}</td>
+    <td style="color:var(--green)">${usd(r.deposit_amount)}</td>
+    <td style="color:var(--red)">${usd(r.remaining)}</td>
+  </tr>`).join('');
+}
+
+function renderAlerts(inv) {
+  const el = document.getElementById('alertsList');
+  const now = new Date();
+  const alerts = [];
+  inv.forEach(p => {
+    const days = p.date_added ? Math.floor((now - new Date(p.date_added)) / 86400000) : 0;
+    if (days > 30) alerts.push({ type: 'red', text: `${p.brand} ${p.model} — ${days} días sin vender`, tag: 'LIQUIDAR' });
+    else if (days > 15) alerts.push({ type: 'yellow', text: `${p.brand} ${p.model} — ${days} días`, tag: 'PROMO' });
+  });
+  const lowStock = inv.filter(p => p.quantity === 1);
+  lowStock.forEach(p => alerts.push({ type: 'gold', text: `${p.brand} ${p.model} — última unidad`, tag: 'ÚLTIMO' }));
+
+  if (!alerts.length) {
+    el.innerHTML = '<div class="empty" style="color:var(--green)">Todo bien. Sin alertas activas.</div>';
+    return;
+  }
+  el.innerHTML = alerts.slice(0,8).map(a => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span class="tag tag-${a.type === 'red' ? 'red' : a.type === 'yellow' ? 'yellow' : 'gold'}">${a.tag}</span>
+      <span style="font-size:11px">${a.text}</span>
+    </div>
+  `).join('');
+}
+
+function renderTopMargin(inv) {
+  const el = document.getElementById('topMargin');
+  const withMargin = inv.map(p => ({
+    ...p,
+    margin: p.purchase_price > 0 ? ((p.sale_price - p.purchase_price) / p.purchase_price * 100) : 0
+  })).sort((a,b) => b.margin - a.margin).slice(0,6);
+  if (!withMargin.length) { el.innerHTML = '<div class="empty">Sin datos</div>'; return; }
+  const maxM = Math.max(...withMargin.map(p => p.margin), 1);
+  el.innerHTML = withMargin.map(p => `
+    <div class="bar-item" style="margin-bottom:10px">
+      <div class="bar-meta">
+        <span class="bar-label" style="font-size:10px">${p.brand} ${p.model}</span>
+        <span class="bar-val">${p.margin.toFixed(0)}%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill green" style="width:${(p.margin/maxM*100)}%"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHistReport(sales) {
+  const el = document.getElementById('histReport');
+  if (!sales.length) { el.innerHTML = '<div class="empty">Sin datos históricos</div>'; return; }
+  const periods = [7, 14, 30];
+  const now = new Date();
+  const rows = periods.map(d => {
+    const since = new Date(now - d*24*60*60*1000);
+    const s = sales.filter(x => new Date(x.date_sold) >= since);
+    const rev = s.reduce((a,x) => a + (x.sale_price*(x.quantity||1)), 0);
+    const profit = s.reduce((a,x) => a + ((x.profit||0)*(x.quantity||1)), 0);
+    return { d, count: s.length, rev, profit };
+  });
+  el.innerHTML = `<table class="table">
+    <thead><tr><th>Período</th><th>Ventas</th><th>Revenue</th><th>Ganancia</th></tr></thead>
+    <tbody>
+      ${rows.map(r => `<tr>
+        <td>Últimos ${r.d}d</td>
+        <td>${r.count}</td>
+        <td style="color:var(--gold)">${usd(r.rev)}</td>
+        <td style="color:var(--green)">${usd(r.profit)}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+function renderFinSummary(inv, sales, debts) {
+  const el = document.getElementById('finSummary');
+  const stockVal = inv.reduce((a,p) => a + p.sale_price*p.quantity, 0);
+  const stockInv = inv.reduce((a,p) => a + p.purchase_price*p.quantity, 0);
+  const potProfit = stockVal - stockInv;
+  const totalDebt = debts.reduce((a,d) => a + ((d.amount||0)-(d.amount_paid||0)), 0);
+  const now = new Date();
+  const since30 = new Date(now - 30*24*60*60*1000);
+  const sales30 = sales.filter(s => new Date(s.date_sold) >= since30);
+  const profit30 = sales30.reduce((a,s) => a + ((s.profit||0)*(s.quantity||1)), 0);
+
+  const items = [
+    { label: 'Inversión actual', val: usd(stockInv), color: 'var(--text)' },
+    { label: 'Valor en stock', val: usd(stockVal), color: 'var(--gold)' },
+    { label: 'Ganancia potencial', val: usd(potProfit), color: 'var(--green)' },
+    { label: 'Ganancia real 30d', val: usd(profit30), color: 'var(--green)' },
+    { label: 'Deuda pendiente', val: usd(totalDebt), color: totalDebt > 0 ? 'var(--red)' : 'var(--green)' },
+    { label: 'Balance neto', val: usd(potProfit - totalDebt), color: (potProfit-totalDebt) > 0 ? 'var(--green)' : 'var(--red)' },
+  ];
+  el.innerHTML = items.map(i => `
+    <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:11px;color:var(--muted)">${i.label}</span>
+      <span style="font-size:13px;font-family:'Playfair Display',serif;color:${i.color}">${i.val}</span>
+    </div>
+  `).join('');
+}
+
+// Init
+window.addEventListener('load', () => {
+  const cfg = getConfig();
+  if (!cfg.key) {
+    document.getElementById('loadingScreen').classList.add('hidden');
+    document.getElementById('configPanel').classList.add('show');
+    document.getElementById('cfgUrl').value = cfg.url;
+    showError('Configurá tu Anon Key de Supabase para ver los datos en vivo.');
+  } else {
+    loadAll();
+  }
+});
+</script>
+</body>
+</html>
