@@ -6,6 +6,7 @@ const WHATSAPP = "5492966210440";
 
 export default function FloatingButtons() {
   const [count, setCount] = useState(0);
+  const [showTop, setShowTop] = useState(false);
 
   const updateCount = () => {
     if (typeof window === "undefined") return;
@@ -18,16 +19,37 @@ export default function FloatingButtons() {
     updateCount();
     window.addEventListener("cart-updated", updateCount);
     window.addEventListener("storage", updateCount);
+
+    const onScroll = () => setShowTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+
     return () => {
       window.removeEventListener("cart-updated", updateCount);
       window.removeEventListener("storage", updateCount);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
   const waMsg = encodeURIComponent("Hola! Tengo una consulta sobre Helena Store.");
 
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3">
+      {showTop && (
+        <button
+          onClick={scrollTop}
+          className="w-14 h-14 rounded-full bg-black border border-gold hover:bg-gold hover:text-black flex items-center justify-center shadow-lg hover:scale-110 transition-all text-gold"
+          title="Subir"
+          aria-label="Subir"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      )}
+
       <a
         href={`https://wa.me/${WHATSAPP}?text=${waMsg}`}
         target="_blank"
