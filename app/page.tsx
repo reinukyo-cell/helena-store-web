@@ -15,9 +15,56 @@ async function getProducts() {
   return data || [];
 }
 
+function ProductCard({ p }: { p: any }) {
+  const images = Array.isArray(p.images) ? p.images : [];
+  const img = images[0];
+  return (
+    <Link href={`/producto/${p.id}`} className="border border-theme hover:border-gold transition-all hover:-translate-y-1 overflow-hidden relative">
+      {p.quantity === 1 && (
+        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] uppercase bg-gold text-black font-medium z-10">Última unidad</span>
+      )}
+      {p.condition === "nuevo" && p.quantity > 1 && (
+        <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] uppercase bg-gold text-black font-medium z-10">Nuevo</span>
+      )}
+      <div className="aspect-square bg-soft flex items-center justify-center overflow-hidden">
+        {img ? <img src={img} alt="" className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs tracking-widest opacity-40">SIN FOTO</span>}
+      </div>
+      <div className="p-3 sm:p-5 border-t border-theme">
+        <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold mb-1">{p.brand}</p>
+        <h3 className="font-serif text-base sm:text-lg font-medium mb-1">{p.model}</h3>
+        <p className="text-[10px] sm:text-xs opacity-60 mb-2 sm:mb-3 line-clamp-1">{[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}</p>
+        <p className="text-lg sm:text-xl text-gold">${Math.round(p.sale_price)} USD</p>
+      </div>
+    </Link>
+  );
+}
+
+function SectionDestacados({ titulo, subtitulo, slug, items }: { titulo: string; subtitulo: string; slug: string; items: any[] }) {
+  if (items.length === 0) return null;
+  return (
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2">{titulo}</h2>
+        <p className="text-xs sm:text-sm tracking-[0.2em] uppercase opacity-50">{subtitulo}</p>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        {items.map((p: any) => <ProductCard key={p.id} p={p} />)}
+      </div>
+      <div className="text-center mt-8">
+        <Link href={`/categoria/${slug}`} className="inline-block px-7 py-3 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
+          Ver todos
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default async function Home() {
   const products = await getProducts();
   const iphones = products.filter((p: any) => p.brand === "iPhone").slice(0, 4);
+  const hogar = products.filter((p: any) => p.brand === "Hogar").slice(0, 4);
+  const accesorios = products.filter((p: any) => p.brand === "Accesorios").slice(0, 4);
+  const otros = products.filter((p: any) => p.brand === "Otros" || p.brand === "Esotéricos").slice(0, 4);
 
   return (
     <main className="min-h-screen overflow-x-hidden">
@@ -98,44 +145,10 @@ export default async function Home() {
         </Link>
       </section>
 
-      {iphones.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-medium mb-2">Destacados iPhone</h2>
-            <p className="text-xs sm:text-sm tracking-[0.2em] uppercase opacity-50">Selección premium</p>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
-            {iphones.map((p: any) => {
-              const images = Array.isArray(p.images) ? p.images : [];
-              const img = images[0];
-              return (
-                <Link key={p.id} href={`/producto/${p.id}`} className="border border-theme hover:border-gold transition-all hover:-translate-y-1 overflow-hidden relative">
-                  {p.quantity === 1 && (
-                    <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] uppercase bg-gold text-black font-medium z-10">Última unidad</span>
-                  )}
-                  {p.condition === "nuevo" && p.quantity > 1 && (
-                    <span className="absolute top-2 left-2 sm:top-3 sm:left-3 px-2 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] uppercase bg-gold text-black font-medium z-10">Nuevo</span>
-                  )}
-                  <div className="aspect-square bg-soft flex items-center justify-center overflow-hidden">
-                    {img ? <img src={img} alt="" className="w-full h-full object-cover" /> : <span className="font-serif text-4xl sm:text-6xl opacity-30">iPhone</span>}
-                  </div>
-                  <div className="p-3 sm:p-5 border-t border-theme">
-                    <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold mb-1">{p.brand}</p>
-                    <h3 className="font-serif text-base sm:text-lg font-medium mb-1">{p.model}</h3>
-                    <p className="text-[10px] sm:text-xs opacity-60 mb-2 sm:mb-3 line-clamp-1">{[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}</p>
-                    <p className="text-lg sm:text-xl text-gold">${Math.round(p.sale_price)} USD</p>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/categoria/celulares?marca=iPhone" className="inline-block px-7 py-3 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
-              Ver todos los iPhone
-            </Link>
-          </div>
-        </section>
-      )}
+      <SectionDestacados titulo="Destacados iPhone" subtitulo="Selección premium" slug="celulares?marca=iPhone" items={iphones} />
+      <SectionDestacados titulo="Destacados Hogar" subtitulo="Para tu día a día" slug="hogar" items={hogar} />
+      <SectionDestacados titulo="Destacados Accesorios" subtitulo="Complementos esenciales" slug="accesorios" items={accesorios} />
+      <SectionDestacados titulo="Destacados Otros" subtitulo="Piezas únicas" slug="otros" items={otros} />
 
       <section id="sobre" className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="text-center mb-8 sm:mb-12">
