@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
 
 export const revalidate = 30;
 
@@ -27,13 +28,7 @@ export default async function Home() {
         <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase opacity-60">Premium · Santa Cruz, Argentina</p>
       </header>
 
-      <nav className="flex flex-wrap justify-center gap-4 sm:gap-10 px-4 sm:px-6 py-4 sm:py-5 border-y border-theme mt-6 sm:mt-8">
-        <Link href="#celulares" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Celulares</Link>
-        <Link href="#accesorios" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Accesorios</Link>
-        <Link href="#hogar" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Hogar</Link>
-        <Link href="#otros" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Otros</Link>
-        <Link href="#sobre" className="text-[10px] sm:text-xs tracking-[0.25em] uppercase hover:text-gold transition-colors">Nosotros</Link>
-      </nav>
+      <Navbar />
 
       <section className="py-12 sm:py-20 px-4 sm:px-6 text-center max-w-5xl mx-auto">
         <p className="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold mb-4 sm:mb-5">Desde 2018</p>
@@ -43,14 +38,14 @@ export default async function Home() {
         <p className="text-sm sm:text-base max-w-lg mx-auto mb-6 sm:mb-8 opacity-70 leading-relaxed">
           Más de 10.000 ventas. Asesoramiento cercano. El equipo ideal, al mejor precio del mercado.
         </p>
-        <Link href="#celulares" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
+        <Link href="/categoria/celulares" className="inline-block px-7 sm:px-9 py-3 sm:py-3.5 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
           Explorar catálogo
         </Link>
       </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
 
-        <Link href="#celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 md:row-span-3 aspect-[4/5] md:aspect-auto">
+        <Link href="/categoria/celulares" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 md:row-span-3 aspect-[4/5] md:aspect-auto">
           <img src="/categorias/celulares.jpg" alt="Celulares" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between text-white">
@@ -63,7 +58,7 @@ export default async function Home() {
           </div>
         </Link>
 
-        <Link href="#accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
+        <Link href="/categoria/accesorios" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/accesorios.jpg" alt="Accesorios" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
@@ -76,7 +71,7 @@ export default async function Home() {
           </div>
         </Link>
 
-        <Link href="#hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
+        <Link href="/categoria/hogar" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/hogar.jpg" alt="Hogar" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
@@ -89,7 +84,7 @@ export default async function Home() {
           </div>
         </Link>
 
-        <Link href="#otros" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
+        <Link href="/categoria/otros" className="group relative overflow-hidden border border-transparent hover:border-gold transition-all hover:-translate-y-1 aspect-[16/9]">
           <img src="/categorias/otros.jpg" alt="Otros" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
           <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between text-white">
@@ -134,43 +129,13 @@ export default async function Home() {
               );
             })}
           </div>
+          <div className="text-center mt-8">
+            <Link href="/categoria/celulares?marca=iPhone" className="inline-block px-7 py-3 border border-current text-[10px] sm:text-xs tracking-[0.2em] uppercase hover:bg-gold hover:border-gold hover:text-black transition-all">
+              Ver todos los iPhone
+            </Link>
+          </div>
         </section>
       )}
-
-      {["Celulares", "Accesorios", "Hogar", "Otros"].map((cat) => {
-        const items = products.filter((p: any) => {
-          if (cat === "Accesorios") return p.brand === "Accesorios";
-          if (cat === "Hogar") return p.brand === "Hogar";
-          if (cat === "Otros") return p.brand === "Otros" || p.brand === "Esotéricos";
-          return !["Accesorios", "Hogar", "Otros", "Esotéricos"].includes(p.brand);
-        });
-        if (items.length === 0) return null;
-        const id = cat.toLowerCase();
-        return (
-          <section key={cat} id={id} className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium mb-6 sm:mb-8 pb-3 border-b border-theme">{cat}</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
-              {items.map((p: any) => {
-                const images = Array.isArray(p.images) ? p.images : [];
-                const img = images[0];
-                return (
-                  <Link key={p.id} href={`/producto/${p.id}`} className="border border-theme hover:border-gold transition-all overflow-hidden">
-                    <div className="aspect-square bg-soft flex items-center justify-center overflow-hidden">
-                      {img ? <img src={img} alt="" className="w-full h-full object-cover" /> : <span className="text-[10px] sm:text-xs tracking-widest opacity-40">SIN FOTO</span>}
-                    </div>
-                    <div className="p-3 sm:p-5">
-                      <p className="text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-gold mb-1">{p.brand}</p>
-                      <h3 className="font-serif text-base sm:text-lg font-medium mb-1">{p.model}</h3>
-                      <p className="text-[10px] sm:text-xs opacity-60 mb-2 sm:mb-3 line-clamp-1">{[p.color, p.storage, p.condition].filter(Boolean).join(" · ")}</p>
-                      <p className="text-lg sm:text-xl text-gold">${Math.round(p.sale_price)} USD</p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
-        );
-      })}
 
       <section id="sobre" className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="text-center mb-8 sm:mb-12">
@@ -201,10 +166,10 @@ export default async function Home() {
           </div>
           <div>
             <h4 className="font-serif text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 text-gold">Tienda</h4>
-            <a href="#celulares" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Celulares</a>
-            <a href="#accesorios" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Accesorios</a>
-            <a href="#hogar" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Hogar</a>
-            <a href="#otros" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold transition-all">Otros</a>
+            <Link href="/categoria/celulares" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Celulares</Link>
+            <Link href="/categoria/accesorios" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Accesorios</Link>
+            <Link href="/categoria/hogar" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold mb-2 transition-all">Hogar</Link>
+            <Link href="/categoria/otros" className="block text-[11px] sm:text-xs opacity-70 hover:opacity-100 hover:text-gold transition-all">Otros</Link>
           </div>
           <div>
             <h4 className="font-serif text-xs sm:text-sm tracking-[0.2em] uppercase mb-3 sm:mb-4 text-gold">Contacto</h4>
