@@ -61,8 +61,8 @@ export const metadata = {
     canonical: BASE_URL,
   },
   verification: {
-    google: <meta name="google-site-verification" content="8s0h6YGyiSL3JMqrTJ7hCe9keBxiq2aoBZlmp-SxIjY" />,
-  },
+  google: "8s0h6YGyiSL3JMqrTJ7hCe9keBxiq2aoBZlmp-SxIjY",
+},
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
